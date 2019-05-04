@@ -1,0 +1,87 @@
+<DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>UCF Garage Data</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- CDN Links (Faster) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/seedrandom.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+        <!-- CDN Only -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <!-- Local Only -->
+        <link rel="stylesheet" type="text/css" media="screen" href="lib/nouislider.min.css" />
+        <script type="text/javascript" src="lib/nouislider.min.js"></script>
+
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+
+            </div>
+
+            <div class="row">
+                <div class=""></div>
+                <div class="col m9" id="visualization">
+                    <svg width="960" height="470">
+
+                    </svg>
+                </div>
+            <!-- </div>
+            <div class="row"> -->
+                <div class="col m3">
+                    <div class="row">
+                        <ul id="color-legend"></ul>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select>
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="1">Single Day</option>
+                                <option value="2">Week Trends</option>
+                                <option value="3">Weekday through Month</option>
+                            </select>
+                            <label>View Select</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12" >
+                            <select id="selected-garage">
+                                <option value="" disabled selected>Garage</option>
+                                <option value="a">A</option>
+                                <option value="b">B</option>
+                                <option value="c">C</option>
+                                <option value="d">D</option>
+                                <option value="h">H</option>
+                                <option value="i">I</option>
+                                <option value="libra">Libra</option>
+                            </select>
+                            <label>Month</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12" >
+                            <select id="selected-month">
+                                <option value="" disabled selected>Month</option>
+                            </select>
+                            <label>Month</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="current-day"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="visualization.paths.js"></script>
+</html>
