@@ -10,7 +10,7 @@ $(document).ready(function(){
 
 var dataset = [];
 
-var jsonFileName = "allnovdec.json";
+var jsonFileName = "../data/allnovdec.json";
 
 var garageColors = {
     a: "pink",
