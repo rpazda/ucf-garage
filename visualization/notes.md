@@ -1,0 +1,2 @@
+# Notes
+- Domain based on dateTime is probably not going to work if we want to superimpose multiple days for a single garage. May be better to use a "minutes from midnight" time due to the pattern of the views. Should simplify the x domain and reduce some of the data refinement.

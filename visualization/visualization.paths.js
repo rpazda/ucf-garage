@@ -5,6 +5,8 @@ $(document).ready(function(){
     renderVisualization(11, 11, null, "d")
     renderVisualization(11, 11, null, "i")
     renderVisualization(11, 11, null, "libra")
+
+    generateGridlines()
 })
 
 var garageColors = {
@@ -46,11 +48,11 @@ function renderVisualization(selectedMonth, selectedDate, dayOfWeek, garage){
             dataset[index].time = Date.parse(element.date+" "+"Nov"+" "+element.year+" "+element.hour+":"+element.minute+":00 EDT");
             //'01 Jan 1970 00:00:00 GMT'
         })
-        console.log(data)
+        //console.log(data)
         var garageData = data.filter(function(d){
             return d.garage == garage && d.date == selectedDate && d.month == selectedMonth
         })
-        console.log(garageData)
+        //console.log(garageData)
         x.domain(
             [
                 new Date(d3.min(garageData, function(d){return parseFloat(d.time)})),
@@ -60,6 +62,19 @@ function renderVisualization(selectedMonth, selectedDate, dayOfWeek, garage){
         newPath(garageData, garage)
 
     })
+}
+function generateGridlines(){
+    for(i = 0; i < y.domain()[1]; i+= 100){
+        var point1 = {
+            time: x.domain()[0],
+            count: i
+        } 
+        var point2 = {
+            time: x.domain()[1],
+            count: i
+        }
+        newGridLine([point1, point2])
+    }
 }
 
 var valueLine = d3.line()
@@ -73,6 +88,17 @@ function newPath(data, garage){
         .attr("fill", "none")
         .attr("stroke", garageColors[garage])
         .attr("stroke-width", "2px")
+        .attr("d", valueLine)
+}
+
+function newGridLine(data){
+    console.log(data)
+    svg.append("path")
+        .data([data])
+        .attr("class", "line")
+        .attr("fill", "none")
+        .attr("stroke", "gray")
+        .attr("stroke-width", "1px")
         .attr("d", valueLine)
 }
 
