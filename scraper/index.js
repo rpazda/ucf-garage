@@ -152,8 +152,10 @@ function getGarageData(db){
                 //entries[index] = entry; 
                 insertDocument(db, entry);
             };
+
+            var zero = minute < 9 ? "0" : ""
             
-            console.log("Data recorded for "+year+" "+months[month]+" "+dateNum+" "+hour+":"+minute);
+            console.log("Data recorded for "+year+" "+months[month]+" "+dateNum+" "+hour+":"+zero+minute);
 
             //console.log(garageData);
             //console.log(entryProto);
