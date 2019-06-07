@@ -1,11 +1,22 @@
 $(document).ready(function(){
-    renderVisualization(11, 11, null, "a")
-    renderVisualization(11, 11, null, "b")
-    renderVisualization(11, 11, null, "c")
-    renderVisualization(11, 11, null, "d")
-    renderVisualization(11, 11, null, "i")
-    renderVisualization(11, 11, null, "libra")
 
+    $.ajax({
+        url: "http://localhost:3000/all",
+        success: function(data){
+            console.log(data)
+            //data = JSON.parse(data)
+            renderVisualization(05, 06, null, "a", data)
+            renderVisualization(05, 06, null, "b", data)
+            renderVisualization(05, 06, null, "c", data)
+            renderVisualization(05, 06, null, "d", data)
+            renderVisualization(05, 06, null, "i", data)
+            renderVisualization(05, 06, null, "libra", data)
+        },
+        error: function(e){
+            console.log(e)
+        },
+        dataType: "json"
+      });
     generateGridlines()
 })
 
@@ -30,17 +41,20 @@ var margin = {top: 20, right: 20, bottom: 40, left: 40},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
 
+const MAX_COUNT = 2400;
+
 var x = d3.scaleTime();/*.domain([0,24])*/
-var y = d3.scaleLinear().domain([0,2000]).range([0,height])
+var y = d3.scaleLinear().domain([0,MAX_COUNT]).range([0,height])
 
 var xAxis = d3.axisBottom(x).ticks(24);
 var yAxis = d3.axisRight(y).ticks(20);
 
 var dataset = [];
 
-function renderVisualization(selectedMonth, selectedDate, dayOfWeek, garage){
-    d3.json(jsonFileName, function(error,data){
-        if(error) throw error;
+function renderVisualization(selectedMonth, selectedDate, dayOfWeek, garage, data){
+    //d3.json(jsonData, function(error,data){
+        console.log(data)
+        //if(error) throw error;
         var dataIndex = 0;
         $.each(data, function(index, element){
             dataset[index] = element;
@@ -52,6 +66,7 @@ function renderVisualization(selectedMonth, selectedDate, dayOfWeek, garage){
         var garageData = data.filter(function(d){
             return d.garage == garage && d.date == selectedDate && d.month == selectedMonth
         })
+        console.log(garageData)
         //console.log(garageData)
         x.domain(
             [
@@ -61,7 +76,7 @@ function renderVisualization(selectedMonth, selectedDate, dayOfWeek, garage){
         ).range([0,width])
         newPath(garageData, garage)
 
-    })
+    //})
 }
 function generateGridlines(){
     for(i = 0; i < y.domain()[1]; i+= 100){
@@ -79,7 +94,7 @@ function generateGridlines(){
 
 var valueLine = d3.line()
     .x(function(d){ return x(d.time)})
-    .y(function(d){ return y(d.count)})
+    .y(function(d){ return y(MAX_COUNT - d.count)})
 
 function newPath(data, garage){
     svg.append("path")
@@ -92,7 +107,7 @@ function newPath(data, garage){
 }
 
 function newGridLine(data){
-    console.log(data)
+    //console.log(data)
     svg.append("path")
         .data([data])
         .attr("class", "line")

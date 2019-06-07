@@ -4,20 +4,21 @@ var request = require("request");
 var schedule = require("node-schedule");
 var express = require("express");
 
-//var config = require("./secret.config.json");
+var config = require("./secret.config.json");
 
 const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
+var cors = require('cors')
 
-const dbURL = "mongodb://localhost:27017";
+const dbURI = "mongodb+srv://"+config.username+":"+config.password+"@"+config.cluster//"mongodb://localhost:27017";
 //"mongodb://"+config.username+":"+config.password+config.url;
-console.log(dbURL);
+console.log(dbURI);
 const dbName = "parking-data";
 
-const client = new MongoClient(dbURL);
+const client = new MongoClient(dbURI, { useNewUrlParser: true });
 
 var port = 3000;
-var app = express();
+var app = express().use(cors());
 
 app.listen(port, function(req, res){
     console.log("App opened on port:"+port);
