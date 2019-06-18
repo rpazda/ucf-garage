@@ -10,9 +10,11 @@
         <!-- CDN Links (Faster) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://d3js.org/d3.v4.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/seedrandom.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/seedrandom.min.js"></script> -->
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
         <!-- CDN Only -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -31,19 +33,19 @@
 
             <div class="row">
                 <div class=""></div>
-                <div class="col m9" id="visualization">
+                <div class="col-md-9" id="visualization">
                     <svg width="960" height="470">
 
                     </svg>
                 </div>
             <!-- </div>
             <div class="row"> -->
-                <div class="col m3">
+                <div class="col-md-3">
                     <div class="row">
                         <ul id="color-legend"></ul>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col-sm-12">
                             <select>
                                 <option value="" disabled selected>Choose your option</option>
                                 <option value="1">Single Day</option>
@@ -54,7 +56,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12" >
+                        <div class="input-field col-sm-12" >
                             <select id="selected-garage">
                                 <option value="" disabled selected>Garage</option>
                                 <option value="a">A</option>
@@ -69,7 +71,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12" >
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Month
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                        <div class="input-field col-sm-12" >
                             <select id="selected-month">
                                 <option value="" disabled selected>Month</option>
                             </select>
