@@ -119,65 +119,68 @@ function getGarageData(db){
 
     request(connectionString, function(error, response, body){
         try{
-            $ = cheerio.load(body);
-            var garageData = [];
+            if(body != undefined){
+                $ = cheerio.load(body);
+                var garageData = [];
 
-            var months = [
-                "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-            ];
-            var weekdays = [
-                "sunday","monday","tuesday","wednesday","thursday","friday","saturday"
-            ];
+                var months = [
+                    "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+                ];
+                var weekdays = [
+                    "sunday","monday","tuesday","wednesday","thursday","friday","saturday"
+                ];
 
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = date.getMonth();
-            var dateNum = date.getDate();
-            var dayOfWeek = date.getDay();
-            var hour = date.getHours();
-            var minute = date.getMinutes(); 
+                var date = new Date();
+                var year = date.getFullYear();
+                var month = date.getMonth();
+                var dateNum = date.getDate();
+                var dayOfWeek = date.getDay();
+                var hour = date.getHours();
+                var minute = date.getMinutes(); 
 
-            var entryProto = {
-                "garage": "x",
-                "count": "x",
-                "year": year,
-                "month": month,
-                "date": dateNum,
-                "dayofweek": weekdays[dayOfWeek],
-                "hour": hour,
-                "minute": minute
-            }
-            // TODO: Try with .each() to reduce size
+                var entryProto = {
+                    "garage": "x",
+                    "count": "x",
+                    "year": year,
+                    "month": month,
+                    "date": dateNum,
+                    "dayofweek": weekdays[dayOfWeek],
+                    "hour": hour,
+                    "minute": minute
+                }
+                // TODO: Try with .each() to reduce size
 
-            garageData[0] = { "garage":"a", "count": $("#gvCounts_tccell0_2").find("strong").html() };
-            garageData[1] = { "garage":"b", "count": $("#gvCounts_tccell1_2").find("strong").html() };
-            garageData[2] = { "garage":"c", "count": $("#gvCounts_tccell2_2").find("strong").html() };
-            garageData[3] = { "garage":"d", "count": $("#gvCounts_tccell3_2").find("strong").html() };
-            garageData[4] = { "garage":"h", "count": $("#gvCounts_tccell4_2").find("strong").html() };
-            garageData[5] = { "garage":"i", "count": $("#gvCounts_tccell5_2").find("strong").html() };
-            garageData[6] = { "garage":"libra", "count": $("#gvCounts_tccell6_2").find("strong").html() };
+                garageData[0] = { "garage":"a", "count": $("#gvCounts_tccell0_2").find("strong").html() };
+                garageData[1] = { "garage":"b", "count": $("#gvCounts_tccell1_2").find("strong").html() };
+                garageData[2] = { "garage":"c", "count": $("#gvCounts_tccell2_2").find("strong").html() };
+                garageData[3] = { "garage":"d", "count": $("#gvCounts_tccell3_2").find("strong").html() };
+                garageData[4] = { "garage":"h", "count": $("#gvCounts_tccell4_2").find("strong").html() };
+                garageData[5] = { "garage":"i", "count": $("#gvCounts_tccell5_2").find("strong").html() };
+                garageData[6] = { "garage":"libra", "count": $("#gvCounts_tccell6_2").find("strong").html() };
 
-            var entries = [];
+                var entries = [];
 
-            for(var index in garageData){
-                var entry = entryProto;
+                for(var index in garageData){
+                    var entry = entryProto;
+                    
+                    entry.count = parseInt(garageData[index].count);
+                    entry.garage = garageData[index].garage;
+                    entry._id = month + date + hour + minute + entry.garage;
+                    //console.log(entry);//Replace with database entry
+                    //insertDocuments(db, function(){}, entry);
+                    //entries[index] = entry; 
+                    insertDocument(db, entry);
+                };
+
+                var zero = minute < 9 ? "0" : ""
                 
-                entry.count = parseInt(garageData[index].count);
-                entry.garage = garageData[index].garage;
-                entry._id = month + date + hour + minute + entry.garage;
-                //console.log(entry);//Replace with database entry
-                //insertDocuments(db, function(){}, entry);
-                //entries[index] = entry; 
-                insertDocument(db, entry);
-            };
+                console.log("Data recorded for "+year+" "+months[month]+" "+dateNum+" "+hour+":"+zero+minute);
 
-            var zero = minute < 9 ? "0" : ""
-            
-            console.log("Data recorded for "+year+" "+months[month]+" "+dateNum+" "+hour+":"+zero+minute);
-
-            //console.log(garageData);
-            //console.log(entryProto);
+                //console.log(garageData);
+                //console.log(entryProto);
+            }
         } catch(e){
+            console.log("Unable to load data from body...")
             console.log(e);
         } 
         
