@@ -1,16 +1,27 @@
 $(document).ready(function(){
 
+    var date = new Date()
+    var month = date.getMonth();
+    var day = date.getDate();
+    var year = date.getFullYear();
+
     $.ajax({
-        url: "http://localhost:3000/all",
+        url: "http://localhost:3000/oneday/"+year+"/"+month+"/"+day,
         success: function(data){
             console.log(data)
             //data = JSON.parse(data)
-            renderVisualization(05, 06, null, "a", data)
-            renderVisualization(05, 06, null, "b", data)
-            renderVisualization(05, 06, null, "c", data)
-            renderVisualization(05, 06, null, "d", data)
-            renderVisualization(05, 06, null, "i", data)
-            renderVisualization(05, 06, null, "libra", data)
+            console.log(year)
+            console.log(month)
+            console.log(day)
+            renderVisualization(month, day, null, "a", data)
+            renderVisualization(month, day, null, "b", data)
+            renderVisualization(month, day, null, "c", data)
+            renderVisualization(month, day, null, "d", data)
+            renderVisualization(month, day, null, "i", data)
+            renderVisualization(month, day, null, "libra", data)
+        },
+        fail: function(e){
+            console.log(e)
         },
         error: function(e){
             console.log(e)
@@ -18,6 +29,7 @@ $(document).ready(function(){
         dataType: "json"
       });
     generateGridlines()
+    $('.dropdown-toggle').dropdown()
 })
 
 var garageColors = {
@@ -53,7 +65,7 @@ var dataset = [];
 
 function renderVisualization(selectedMonth, selectedDate, dayOfWeek, garage, data){
     //d3.json(jsonData, function(error,data){
-        console.log(data)
+        //console.log(data)
         //if(error) throw error;
         var dataIndex = 0;
         $.each(data, function(index, element){

@@ -12,7 +12,7 @@ var cors = require('cors')
 
 const dbURI = "mongodb+srv://"+config.username+":"+config.password+"@"+config.cluster//"mongodb://localhost:27017";
 //"mongodb://"+config.username+":"+config.password+config.url;
-console.log(dbURI);
+//console.log(dbURI);
 const dbName = "parking-data";
 
 const client = new MongoClient(dbURI, { useNewUrlParser: true });
@@ -23,6 +23,8 @@ var app = express().use(cors());
 app.listen(port, function(req, res){
     console.log("App opened on port:"+port);
 });
+
+// TODO: Make callback format consistent
 
 app.get('/', function(req, res){
     res.send("Hello World");
@@ -39,6 +41,13 @@ app.get('/all', function(req, res){
     findDocuments(db, function(data){
         res.send(data);
     });
+})
+
+app.get('/oneday/:year/:month/:date', function(req, res){
+    findCountsByDate(parseInt(req.params.year), parseInt(req.params.month), parseInt(req.params.date), (data)=>{
+        console.log(req.params)
+        res.send(data)
+    })
 })
 
 client.connect(function(err){
@@ -94,6 +103,15 @@ const findCountsByGarage = function(garage, callback){
         assert.equal(err, null);
         callback(docs);
     });
+}
+
+const findCountsByDate = function(year, month, date, callback){
+    const db = client.db(dbName);
+    const collection = db.collection('garage-counts');
+    collection.find({"date": date, "month": month, "year": year}).toArray((err, docs) =>{
+        assert.equal(err, null);
+        callback(docs)
+    })
 }
 
 function getGarageData(db){
