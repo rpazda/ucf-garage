@@ -1,7 +1,9 @@
 # TODO:
 
 - [x] render data as paths
-- [ ] convert to bootstrap
+- [ ] make function call notation more consistent
+- [ ] populate dropdown from keys in db
+- [x] convert to bootstrap
 - [ ] axes
 - [ ] gridlines
 - [ ] day selection
