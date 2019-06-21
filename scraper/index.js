@@ -45,7 +45,7 @@ app.get('/all', function(req, res){
 
 app.get('/oneday/:year/:month/:date', function(req, res){
     findCountsByDate(parseInt(req.params.year), parseInt(req.params.month), parseInt(req.params.date), (data)=>{
-        console.log(req.params)
+        //console.log(req.params)
         res.send(data)
     })
 })

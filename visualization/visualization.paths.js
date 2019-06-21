@@ -76,7 +76,7 @@ function renderVisualization(selectedMonth, selectedDate, dayOfWeek, garage, dat
         })
         //console.log(data)
         var garageData = data.filter(function(d){
-            return d.garage == garage && d.date == selectedDate && d.month == selectedMonth
+            return d.garage == garage && d.date == selectedDate && d.month == selectedMonth && d.count != null
         })
         console.log(garageData)
         //console.log(garageData)
