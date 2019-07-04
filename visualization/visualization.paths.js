@@ -3,10 +3,11 @@ $(document).ready(function(){
     var date = new Date()
     var month = date.getMonth();
     var day = date.getDate();
+    if(day > 1) day--
     var year = date.getFullYear();
 
     $.ajax({
-        url: "http://localhost:3000/oneday/"+year+"/"+month+"/"+day,
+        url: "http://"+window.location.hostname+":3000/oneday/"+year+"/"+month+"/"+day,
         success: function(data){
             console.log(data)
             //data = JSON.parse(data)
@@ -30,6 +31,8 @@ $(document).ready(function(){
       });
     generateGridlines()
     $('.dropdown-toggle').dropdown()
+
+    $('#current-day').html('Data from '+month+'-'+day+'-'+year+'.'+'<p>Data from yesterday unless it is the first day of the month</p><p>The logic for handling the first day is not trivial so this is good enough for now.</p>')
 })
 
 var garageColors = {

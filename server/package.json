@@ -1,0 +1,21 @@
+{
+  "name": "ucf-parking",
+  "version": "1.0.0",
+  "description": "D3 visualization of UCF parking data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rpazda",
+  "license": "ISC",
+  "dependencies": {
+    "assert": "^1.4.1",
+    "cheerio": "^1.0.0-rc.2",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "http": "0.0.0",
+    "mongodb": "^3.1.8",
+    "node-schedule": "^1.3.0",
+    "request": "^2.88.0"
+  }
+}
