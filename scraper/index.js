@@ -57,13 +57,21 @@ client.connect(function(err){
     const db = client.db(dbName);
     db.createIndex({garage: 1, year: 1, date: 1, hour: 1, minute: 1});
 
-    for(var i = 0; i < 60; i+=5){
-        schedule.scheduleJob(i+' * * * *', function(){
-            getGarageData(db);
-        }); 
-        console.log("scheduled to collect on minute "+i+" of each hour");
+    for(h=5; h<23; h++){
+        var hours = []
+        var min = []
+        for(var i = 0; i < 60; i+=5){
+            schedule.scheduleJob(i+' '+h+' * * *', function(){
+                getGarageData(db);
+            }); 
+            if(min.indexOf(i) === -1){ 
+                min.append(i)
+            }
+        }
+        hours.append(h)
     }
-        
+    
+    console.log("scheduled to collect on minutes "+min+" of hours "+hours);
 
     //insertDocuments(db, function(){});
     findDocuments(db, function(docs){
