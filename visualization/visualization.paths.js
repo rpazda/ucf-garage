@@ -3,37 +3,72 @@ $(document).ready(function(){
     var date = new Date()
     var month = date.getMonth();
     var day = date.getDate();
-    if(day > 1) day--
+    if(day > 1) day -= 3
     var year = date.getFullYear();
 
+    updateDate(11, 11, 2019) // Date with data for viz development
+    //updateDate(month, day, year);
+    // TODO: Change when actually have current data 
+})
+
+function setDateFromPage(){
+    var month = $("#month-input").val()
+    var day = $("#day-input").val()
+    var year = $("#year-input").val()
+    
+    console.log(month+" "+day+" "+year)
+    updateDate(month, day, year)
+}
+
+function updateDate(month, day, year){
     $.ajax({
-        url: "http://"+window.location.hostname+":3000/oneday/"+year+"/"+month+"/"+day,
+        //url: "http://"+window.location.hostname+":3000/oneday/"+year+"/"+month+"/"+day,
+        url: "http://localhost:3000/oneday/"+year+"/"+month+"/"+day,
         success: function(data){
+            svg.html("")
             console.log(data)
             //data = JSON.parse(data)
-            console.log(year)
-            console.log(month)
-            console.log(day)
-            renderVisualization(month, day, null, "a", data)
-            renderVisualization(month, day, null, "b", data)
-            renderVisualization(month, day, null, "c", data)
-            renderVisualization(month, day, null, "d", data)
-            renderVisualization(month, day, null, "i", data)
-            renderVisualization(month, day, null, "libra", data)
+            console.log("Loading data for "+month+"/"+day+"/"+year)
+            constructDayLine(month, day, null, "a", data)
+            constructDayLine(month, day, null, "b", data)
+            constructDayLine(month, day, null, "c", data)
+            constructDayLine(month, day, null, "d", data)
+            constructDayLine(month, day, null, "i", data)
+            constructDayLine(month, day, null, "libra", data)
+
+            var garageData = data.filter(function(d){
+                return d.date == day && d.month == month && d.year == year && d.count != null
+            })
+
+            x.domain(
+                [
+                    new Date(d3.min(garageData, function(d){return parseFloat(d.time)})),
+                    new Date(d3.max(garageData, function(d){return parseFloat(d.time)})),
+                ]
+            ).range([0,width])
+
+            generateGridlines()
+
+            var xAxis = d3.axisBottom(x).ticks(24);
+            //var yAxis = d3.axisRight(y).ticks(20);
+            svg.append(xAxis)
+            //svg.append(yAxis)
+
+            console.log("http://localhost:3000/oneday/"+year+"/"+month+"/"+day)
         },
         fail: function(e){
             console.log(e)
         },
         error: function(e){
             console.log(e)
+            console.log("http://localhost:3000/oneday/"+year+"/"+month+"/"+day)
         },
         dataType: "json"
       });
-    generateGridlines()
     $('.dropdown-toggle').dropdown()
 
     $('#current-day').html('Data from '+month+'-'+day+'-'+year+'.'+'<p>Data from yesterday unless it is the first day of the month</p><p>The logic for handling the first day is not trivial so this is good enough for now.</p>')
-})
+}
 
 var garageColors = {
     a: "pink",
@@ -45,7 +80,7 @@ var garageColors = {
     libra: "green"
 }
 
-var jsonFileName = "../data/allnovdec.json"
+//var jsonFileName = "../data/allnovdec.json"
 
 var svg = d3.select("svg"); //TODO: add margins n' such
 
@@ -56,42 +91,25 @@ var margin = {top: 20, right: 20, bottom: 40, left: 40},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
 
-const MAX_COUNT = 2400;
+const MAX_COUNT = 2400; // Assign max count for consistent scaling
 
 var x = d3.scaleTime();/*.domain([0,24])*/
 var y = d3.scaleLinear().domain([0,MAX_COUNT]).range([0,height])
 
-var xAxis = d3.axisBottom(x).ticks(24);
-var yAxis = d3.axisRight(y).ticks(20);
-
 var dataset = [];
 
-function renderVisualization(selectedMonth, selectedDate, dayOfWeek, garage, data){
-    //d3.json(jsonData, function(error,data){
-        //console.log(data)
-        //if(error) throw error;
-        var dataIndex = 0;
-        $.each(data, function(index, element){
-            dataset[index] = element;
-            dataset[index].timeBase = element.date+" "+"Nov"+" "+element.year+" "+element.hour+" "+element.minute+":00 EDT"
-            dataset[index].time = Date.parse(element.date+" "+"Nov"+" "+element.year+" "+element.hour+":"+element.minute+":00 EDT");
-            //'01 Jan 1970 00:00:00 GMT'
-        })
-        //console.log(data)
-        var garageData = data.filter(function(d){
-            return d.garage == garage && d.date == selectedDate && d.month == selectedMonth && d.count != null
-        })
-        console.log(garageData)
-        //console.log(garageData)
-        x.domain(
-            [
-                new Date(d3.min(garageData, function(d){return parseFloat(d.time)})),
-                new Date(d3.max(garageData, function(d){return parseFloat(d.time)})),
-            ]
-        ).range([0,width])
-        newPath(garageData, garage)
-
-    //})
+function constructDayLine(selectedMonth, selectedDate, dayOfWeek, garage, data){
+    $.each(data, function(index, element){
+        dataset[index] = element;
+        dataset[index].timeBase = element.date+" "+"Nov"+" "+element.year+" "+element.hour+" "+element.minute+":00 EDT"
+        dataset[index].time = Date.parse(element.date+" "+"Nov"+" "+element.year+" "+element.hour+":"+element.minute+":00 EDT");
+        //'01 Jan 1970 00:00:00 GMT'
+    })
+    var garageData = data.filter(function(d){
+        return d.garage == garage && d.date == selectedDate && d.month == selectedMonth && d.count != null
+    })
+    //console.log(garageData)
+    newPath(garageData, garage)  
 }
 function generateGridlines(){
     for(i = 0; i < y.domain()[1]; i+= 100){
@@ -122,7 +140,6 @@ function newPath(data, garage){
 }
 
 function newGridLine(data){
-    //console.log(data)
     svg.append("path")
         .data([data])
         .attr("class", "line")

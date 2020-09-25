@@ -1,10 +1,5 @@
-var cheerio = require("cheerio");
-var http = require("http");
-var request = require("request");
-var schedule = require("node-schedule");
 var express = require("express");
 var path = require("path");
-var bodyParser = require("body-parser")
 
 var config = require("./secret.config.json");
 
@@ -12,7 +7,9 @@ const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
 var cors = require('cors')
 
-const dbURI = "mongodb+srv://"+config.username+":"+config.password+"@"+config.cluster//"mongodb://localhost:27017";
+// TODO: Resolve create index error, probably an issue with the connection string
+const dbURI = "mongodb+srv://"+config.username+":"+config.password+"@"+config.cluster
+//const dbURI = "mongodb://localhost:27017";
 //"mongodb://"+config.username+":"+config.password+config.url;
 //console.log(dbURI);
 const dbName = "parking-data";
@@ -59,7 +56,7 @@ client.connect(function(err){
     console.log("Connected successfully to server");
 
     const db = client.db(dbName);
-    db.createIndex({garage: 1, year: 1, date: 1, hour: 1, minute: 1});
+    db.createIndex({garage: 1, year: 1, date: 1, hour: 1, minute: 1}); //TODO: Index issue??
         
     // findDocuments(db, function(docs){
     //     console.log("Found "+docs.length+" records");

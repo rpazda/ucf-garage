@@ -40,7 +40,7 @@
                 </div>
             <!-- </div>
             <div class="row"> -->
-                <!-- 
+                
                 <div class="col-md-3">
                     <div class="row">
                         <ul id="color-legend"></ul>
@@ -88,14 +88,22 @@
                             </select>
                             <label>Month</label>
                         </div>
-                    </div> -->
+                    </div>
                     
                 </div>
-                <div class="row col-md-6">
+                <div class="col-md-6">
                     <div id="current-day"></div>
+                </div>
+                <div class="col-md-6 form-group">
+                    <!-- <form> -->
+                        <span>Month</span><input type="number" id="month-input" class="form-control"></input>
+                        <span>Day</span><input type="number" id="day-input" class="form-control"></input>
+                        <span>Year</span><input type="number" id="year-input" class="form-control"></input>
+                        <button onClick="setDateFromPage()" class="btn btn-default">Set Date</button>
+                    <!-- </form> -->
                 </div>
             </div>
         </div>
     </body>
-    <script type="text/javascript" src="/visualization/visualization.paths.js"></script>
+    <script type="text/javascript" src="visualization.paths.js"></script>
 </html>
